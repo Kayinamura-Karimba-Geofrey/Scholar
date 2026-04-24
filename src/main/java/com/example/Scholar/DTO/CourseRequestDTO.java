@@ -1,5 +1,9 @@
 package com.example.Scholar.DTO;
 
-public record CourseRequestDTO(String title ){
+import jakarta.validation.constraints.NotBlank;
 
+public record CourseRequestDTO(
+        @NotBlank(message = "Course title is required")
+        String title
+) {
 }

@@ -5,6 +5,7 @@ import com.example.Scholar.DTO.LoginDTO;
 import com.example.Scholar.DTO.RegisterDTO;
 import com.example.Scholar.Service.AuthService;
 import com.example.Scholar.Service.RefreshTokenService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,12 +20,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterDTO dto){
+    public String register(@Valid @RequestBody RegisterDTO dto){
         return service.register(dto);
     }
 
     @PostMapping("/login")
-    public AuthResponseDTO login(@RequestBody LoginDTO dto){
+    public AuthResponseDTO login(@Valid @RequestBody LoginDTO dto){
         return service.login(dto);
     }
 

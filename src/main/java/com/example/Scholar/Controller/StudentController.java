@@ -4,6 +4,7 @@ import com.example.Scholar.DTO.StudentRequestDto;
 import com.example.Scholar.DTO.StudentResponseDto;
 import com.example.Scholar.Service.StudentService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class StudentController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public StudentResponseDto create(@RequestBody StudentRequestDto dto){
+    public StudentResponseDto create(@Valid @RequestBody StudentRequestDto dto){
         return service.create (dto);
     }
 
@@ -34,7 +35,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-     public  StudentResponseDto update(@PathVariable Long id, @RequestBody StudentRequestDto dto){
+     public  StudentResponseDto update(@PathVariable Long id, @Valid @RequestBody StudentRequestDto dto){
         return service.update(id,dto);
 
 

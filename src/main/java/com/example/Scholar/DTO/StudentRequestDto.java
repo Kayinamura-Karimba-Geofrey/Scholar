@@ -4,7 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record StudentRequestDto(
-        @NotBlank String name,
-        @Email String email
+        @NotBlank(message = "Student name is required")
+        String name,
+
+        @NotBlank(message = "Student email is required")
+        @Email(message = "Invalid email format")
+        String email
 ) {
 }
