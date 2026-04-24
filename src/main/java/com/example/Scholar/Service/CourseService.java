@@ -2,16 +2,15 @@ package com.example.Scholar.Service;
 
 import com.example.Scholar.DTO.CourseRequestDTO;
 import com.example.Scholar.DTO.CourseResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CourseService {
 
     CourseResponseDTO create(CourseRequestDTO dto);
-    List<CourseResponseDTO> getAll();
+    Page<CourseResponseDTO> getAll(Pageable pageable);
 
     CourseResponseDTO getById(Long id);
     CourseResponseDTO update(Long id , CourseRequestDTO dto);
-     void  delete(Long id );
-    
+    void  delete(Long id );
 }

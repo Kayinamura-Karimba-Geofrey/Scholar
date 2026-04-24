@@ -7,6 +7,8 @@ import com.example.Scholar.DTO.StudentResponseDto;
 import com.example.Scholar.Model.Student;
 import com.example.Scholar.Repository.StudentRepository;
 import com.example.Scholar.Service.StudentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentResponseDto> getAll() {
-        return repo.findAll().stream().map(this::map).toList();
+    public Page<StudentResponseDto> getAll(Pageable pageable) {
+        return repo.findAll(pageable).map(this::map);
     }
 
     @Override
