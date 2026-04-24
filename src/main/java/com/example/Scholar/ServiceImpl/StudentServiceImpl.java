@@ -1,5 +1,7 @@
 package com.example.Scholar.ServiceImpl;
 
+import com.example.Scholar.Exception.ResourceNotFoundException;
+
 import com.example.Scholar.DTO.StudentRequestDto;
 import com.example.Scholar.DTO.StudentResponseDto;
 import com.example.Scholar.Model.Student;
@@ -32,14 +34,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponseDto getById(Long id) {
-        Student s = repo.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        Student s = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         return map(s);
     }
 
     @Override
     public StudentResponseDto update(Long id, StudentRequestDto dto) {
         Student s = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         s.setName(dto.name());
         s.setEmail(dto.email());
         return map(repo.save(s));

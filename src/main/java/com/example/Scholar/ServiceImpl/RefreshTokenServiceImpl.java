@@ -1,5 +1,7 @@
 package com.example.Scholar.ServiceImpl;
 
+import com.example.Scholar.Exception.ResourceNotFoundException;
+
 import com.example.Scholar.Model.RefreshToken;
 import com.example.Scholar.Model.User;
 import com.example.Scholar.Repository.RefreshTokenRepository;
@@ -25,7 +27,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public  String createRefreshToken(Long userId) {
         User user = userRepo.findById(userId)
-                .orElseThrow(()-> new RuntimeException("user not found "));
+                .orElseThrow(()-> new ResourceNotFoundException("user not found "));
 
         RefreshToken token = new RefreshToken();
         token.setUser(user);
@@ -39,7 +41,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         @Override
     public String verifyAndGenerateAccessToken(String refreshToken){
         RefreshToken token = repo.findByToken(refreshToken)
-                .orElseThrow(()->new RuntimeException("invalid refresh token"));
+                .orElseThrow(()->new ResourceNotFoundException("invalid refresh token"));
 
         if (token.getExpiryDate().isBefore(Instant.now())){
             repo.delete(token);

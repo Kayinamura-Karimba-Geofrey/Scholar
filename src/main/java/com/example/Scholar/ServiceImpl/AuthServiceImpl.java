@@ -1,5 +1,7 @@
 package com.example.Scholar.ServiceImpl;
 
+import com.example.Scholar.Exception.ResourceNotFoundException;
+
 import com.example.Scholar.DTO.AuthResponseDTO;
 import com.example.Scholar.DTO.LoginDTO;
 import com.example.Scholar.DTO.RegisterDTO;
@@ -47,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponseDTO login(LoginDTO dto) {
 
         User user = repo.findByUsername(dto.username())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!encoder.matches(dto.password(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
