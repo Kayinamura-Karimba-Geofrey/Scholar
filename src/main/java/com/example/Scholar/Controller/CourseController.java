@@ -4,6 +4,10 @@ import com.example.Scholar.DTO.CourseRequestDTO;
 import com.example.Scholar.DTO.CourseResponseDTO;
 import com.example.Scholar.Service.CourseService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +28,15 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<CourseResponseDTO> getAll(){
-        return  service.getAll();
+    public Page<CourseResponseDTO> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ){
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return  service.getAll(pageable);
     }
 
     @GetMapping("/{id}")
