@@ -6,6 +6,7 @@ import com.example.Scholar.DTO.StudentRequestDto;
 import com.example.Scholar.DTO.StudentResponseDto;
 import com.example.Scholar.Model.Student;
 import com.example.Scholar.Repository.StudentRepository;
+import com.example.Scholar.Service.AuditService;
 import com.example.Scholar.Service.StudentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +17,11 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository repo;
+    private final AuditService auditService;
 
-    public StudentServiceImpl(StudentRepository repo) {
+    public StudentServiceImpl(StudentRepository repo, AuditService auditService) {
         this.repo = repo;
+        this.auditService = auditService;
     }
 
     @Override
@@ -26,7 +29,9 @@ public class StudentServiceImpl implements StudentService {
         Student s = new Student();
         s.setName(dto.name());
         s.setEmail(dto.email());
-        return map(repo.save(s));
+        Student saved = repo.save(s);
+        auditService.log("CREATE_STUDENT", "Student", saved.getId().toString(), "Created student: " + saved.getName());
+        return map(saved);
     }
 
     @Override
@@ -46,12 +51,15 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         s.setName(dto.name());
         s.setEmail(dto.email());
-        return map(repo.save(s));
+        Student updated = repo.save(s);
+        auditService.log("UPDATE_STUDENT", "Student", updated.getId().toString(), "Updated student info: " + updated.getName());
+        return map(updated);
     }
 
     @Override
     public void delete(Long id) {
         repo.deleteById(id);
+        auditService.log("DELETE_STUDENT", "Student", id.toString(), "Deleted student with ID: " + id);
     }
 
     private StudentResponseDto map(Student s) {

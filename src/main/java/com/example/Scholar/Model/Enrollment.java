@@ -3,6 +3,7 @@ package com.example.Scholar.Model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -10,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Enrollment {
+@EqualsAndHashCode(callSuper = true)
+public class Enrollment extends BaseEntity {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
